@@ -1,0 +1,1108 @@
+<title>Deep Bhakti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Devanagari:wght@400;500;600&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E0B08;
+    --bg-deep:#050403;
+    --surface:#18120D;
+    --ink:#F4E9D6;
+    --ink-dim:#B7A088;
+    --ink-faint:#7A6A56;
+    --gold:#D6993D;
+    --gold-soft:#E9B968;
+    --gold-dim:#5E4826;
+    --line:rgba(244,233,214,0.09);
+    --focus:#E9B968;
+    --session-bg:#0E0B08;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Serif', Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .deva{font-family:'Noto Serif Devanagari','Noto Serif',serif;}
+  .ui{font-family:'Noto Sans', system-ui, sans-serif;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--focus); outline-offset:3px;}
+
+  [hidden]{display:none !important;}
+
+  .screen{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:8vh 28px;
+    position:relative;
+  }
+
+  .col{
+    width:100%;
+    max-width:420px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:0;
+  }
+
+  /* ---------- Home ---------- */
+  #view-home{background:var(--bg);}
+  .gear{
+    position:absolute; top:22px; right:22px;
+    width:34px; height:34px; border-radius:50%;
+    background:transparent; border:1px solid transparent;
+    color:var(--ink-faint); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .gear:hover{color:var(--ink-dim); border-color:var(--line);}
+  .gear svg{width:18px;height:18px;}
+
+  .brand{
+    font-size:13px;
+    letter-spacing:0.42em;
+    color:var(--gold-soft);
+    font-family:'Noto Sans', sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    margin-bottom:22px;
+  }
+  .duration-line{
+    font-size:17px;
+    color:var(--ink-dim);
+    margin-bottom:64px;
+    font-style:italic;
+  }
+  .lila-label{
+    font-size:11px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    font-family:'Noto Sans', sans-serif;
+    margin-bottom:10px;
+  }
+  .lila-name{
+    font-size:22px;
+    color:var(--ink);
+    margin-bottom:72px;
+    font-weight:500;
+  }
+  .btn-begin{
+    background:transparent;
+    color:var(--gold-soft);
+    border:1px solid var(--gold-dim);
+    padding:15px 52px;
+    font-size:14px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    font-family:'Noto Sans', sans-serif;
+    border-radius:2px;
+    cursor:pointer;
+    transition:border-color .3s ease, color .3s ease, box-shadow .3s ease;
+  }
+  .btn-begin:hover{border-color:var(--gold); color:var(--gold); box-shadow:0 0 24px rgba(214,153,61,0.15);}
+
+  /* ---------- Setup ---------- */
+  #view-setup{background:var(--bg);}
+  .setup-title{font-size:22px; margin-bottom:6px; font-weight:500;}
+  .setup-sub{font-size:14px; color:var(--ink-faint); margin-bottom:56px; font-family:'Noto Sans',sans-serif;}
+  .setup-rows{width:100%; display:flex; flex-direction:column;}
+  .setup-row{
+    display:flex; align-items:center; justify-content:space-between;
+    width:100%; padding:18px 2px;
+    border-bottom:1px solid var(--line);
+    font-family:'Noto Sans', sans-serif;
+  }
+  .setup-row:first-child{border-top:1px solid var(--line);}
+  .row-label{font-size:14px; color:var(--ink-dim); text-align:left;}
+  .row-value{font-size:14px; color:var(--ink); font-family:'Noto Serif',serif;}
+  .switch{
+    width:42px; height:24px; border-radius:12px;
+    background:var(--gold-dim); position:relative; cursor:pointer;
+    border:none; padding:0; flex-shrink:0;
+    transition:background .2s ease;
+  }
+  .switch[data-on="true"]{background:var(--gold);}
+  .switch .knob{
+    position:absolute; top:3px; left:3px;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--bg-deep); transition:left .2s ease;
+  }
+  .switch[data-on="true"] .knob{left:21px;}
+  .setup-actions{margin-top:56px; display:flex; flex-direction:column; align-items:center; gap:18px;}
+
+  /* ---------- Session ---------- */
+  #view-session{
+    background:var(--session-bg);
+    transition:background-color 2.5s ease;
+    overflow:hidden;
+    padding:0;
+    cursor:default;
+  }
+  .phase-label{
+    position:absolute; top:32px; left:0; right:0;
+    text-align:center;
+    font-family:'Noto Sans', sans-serif;
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    transition:opacity 1.5s ease;
+  }
+  .session-center{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cue-text{
+    font-size:19px;
+    color:var(--ink);
+    line-height:1.7;
+    max-width:320px;
+    transition:opacity 1.4s ease;
+    opacity:0;
+    white-space:pre-line;
+  }
+  .cue-text.small-cap{
+    font-family:'Noto Sans', sans-serif;
+    font-size:12px;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+  }
+
+  .pancha{
+    font-size:17px;
+    line-height:2.1;
+    color:var(--ink);
+    white-space:pre-line;
+    transition:opacity 1.6s ease;
+    opacity:0;
+  }
+
+  .breath-wrap{
+    display:flex; flex-direction:column; align-items:center; gap:34px;
+    transition:opacity 2s ease;
+  }
+  .breath-ring-holder{
+    width:230px; height:230px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .breath-ring{
+    position:absolute;
+    width:180px; height:180px;
+    border-radius:50%;
+    border:1px solid var(--gold-dim);
+    transition:opacity 2s ease;
+  }
+  .breath-image{
+    width:88px; height:88px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-size:30px;
+    color:var(--gold-soft);
+    z-index:1;
+    flex-shrink:0;
+  }
+  .breath-line-label{
+    font-family:'Noto Sans', sans-serif;
+    font-size:11px;
+    letter-spacing:0.34em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:10px;
+    transition:opacity .4s ease;
+  }
+  .breath-line-text{
+    font-size:18px;
+    color:var(--ink);
+    transition:opacity .4s ease;
+  }
+
+  .lila-image-holder{
+    width:260px; height:260px;
+    border-radius:4px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px;
+    color:var(--ink-faint);
+    font-family:'Noto Sans', sans-serif;
+    letter-spacing:0.05em;
+    text-align:center;
+    padding:20px;
+    transition:opacity 3s ease;
+  }
+  .lila-wrap{display:flex; flex-direction:column; align-items:center; gap:30px;}
+  .close-eyes{
+    font-family:'Noto Sans', sans-serif;
+    font-size:13px;
+    letter-spacing:0.34em;
+    color:var(--gold-soft);
+    transition:opacity 1.5s ease;
+    opacity:0;
+  }
+
+  .akshara-units{
+    display:flex; flex-direction:column; align-items:center; gap:26px;
+  }
+  .akshara-unit{
+    font-family:'Noto Serif Devanagari','Noto Serif',serif;
+    font-size:44px;
+    color:var(--ink);
+    transition:opacity 1.6s ease;
+    opacity:0;
+  }
+  .akshara-full{
+    font-family:'Noto Serif Devanagari','Noto Serif',serif;
+    font-size:26px;
+    color:var(--ink);
+    transition:opacity 1.6s ease;
+    opacity:0;
+    margin-top:4px;
+  }
+  .akshara-translit{
+    font-size:13px;
+    color:var(--ink-faint);
+    margin-top:8px;
+    transition:opacity 1.6s ease;
+    opacity:0;
+    font-style:italic;
+  }
+
+  .session-tap-layer{position:absolute; inset:0;}
+
+  .session-overlay{
+    position:absolute; bottom:0; left:0; right:0;
+    display:flex; flex-direction:column; align-items:center;
+    gap:18px;
+    padding:26px 24px 40px;
+    background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
+    opacity:0; pointer-events:none;
+    transition:opacity .5s ease;
+  }
+  .session-overlay.visible{opacity:1; pointer-events:auto;}
+  .remaining{
+    font-family:'Noto Sans', sans-serif;
+    font-variant-numeric:tabular-nums;
+    font-size:13px;
+    letter-spacing:0.1em;
+    color:var(--ink-dim);
+  }
+  .overlay-actions{display:flex; gap:28px;}
+  .ghost-btn{
+    background:transparent; border:none;
+    color:var(--ink-dim);
+    font-family:'Noto Sans', sans-serif;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    cursor:pointer;
+    padding:8px 4px;
+    border-bottom:1px solid transparent;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .ghost-btn:hover{color:var(--gold-soft); border-color:var(--gold-dim);}
+
+  /* ---------- Complete ---------- */
+  #view-complete{background:var(--bg);}
+  .complete-title{font-size:24px; margin-bottom:14px; font-weight:500;}
+  .complete-sub{font-size:15px; color:var(--ink-faint); margin-bottom:64px; font-family:'Noto Sans',sans-serif;}
+  .btn-done{
+    background:transparent;
+    color:var(--gold-soft);
+    border:1px solid var(--gold-dim);
+    padding:14px 48px;
+    font-size:13px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-family:'Noto Sans', sans-serif;
+    border-radius:2px;
+    cursor:pointer;
+    transition:border-color .3s ease, color .3s ease;
+  }
+  .btn-done:hover{border-color:var(--gold); color:var(--gold);}
+
+  @media (prefers-reduced-motion: reduce){
+    .breath-ring, .cue-text, .pancha, .breath-wrap, .lila-image-holder, .akshara-unit, .akshara-full, .akshara-translit, .close-eyes{
+      transition-duration:.2s !important;
+    }
+  }
+</style>
+
+<div id="view-home" class="screen">
+  <button class="gear ui" id="btn-gear" aria-label="Setup">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13a7.6 7.6 0 000-2l2-1.5-2-3.5-2.4.6a7.7 7.7 0 00-1.7-1L14.8 3h-5.6l-.5 2.6a7.7 7.7 0 00-1.7 1l-2.4-.6-2 3.5L4.6 11a7.6 7.6 0 000 2l-2 1.5 2 3.5 2.4-.6a7.7 7.7 0 001.7 1l.5 2.6h5.6l.5-2.6a7.7 7.7 0 001.7-1l2.4.6 2-3.5-2-1.5z"/></svg>
+  </button>
+  <div class="col">
+    <div class="brand">Deep Bhakti</div>
+    <div class="duration-line">60 Minute Meditation</div>
+    <div class="lila-label">Today&rsquo;s L&#299;l&#257;</div>
+    <div class="lila-name deva">Govardhana</div>
+    <button class="btn-begin ui" id="btn-home-begin">Begin</button>
+  </div>
+</div>
+
+<div id="view-setup" class="screen" hidden>
+  <div class="col">
+    <div class="setup-title">Deep Bhakti Meditation</div>
+    <div class="setup-sub" id="setup-duration-label">60 minutes</div>
+    <div class="setup-rows">
+      <div class="setup-row">
+        <span class="row-label">L&#299;l&#257;</span>
+        <span class="row-value deva">Govardhana</span>
+      </div>
+      <div class="setup-row">
+        <span class="row-label">Voice Guidance</span>
+        <button class="switch" id="switch-voice" data-on="true" aria-label="Toggle voice guidance"><span class="knob"></span></button>
+      </div>
+      <div class="setup-row">
+        <span class="row-label">Ambient Sounds</span>
+        <button class="switch" id="switch-ambient" data-on="true" aria-label="Toggle ambient sounds"><span class="knob"></span></button>
+      </div>
+      <div class="setup-row">
+        <span class="row-label">Preview (60 sec)</span>
+        <button class="switch" id="switch-preview" data-on="false" aria-label="Toggle 60 second preview mode"><span class="knob"></span></button>
+      </div>
+    </div>
+    <div class="setup-actions">
+      <button class="btn-begin ui" id="btn-setup-begin">Begin</button>
+    </div>
+  </div>
+</div>
+
+<div id="view-session" class="screen" hidden>
+  <div class="phase-label ui" id="phase-label"></div>
+  <div class="session-center" id="session-center"></div>
+  <div class="session-tap-layer" id="session-tap-layer"></div>
+  <div class="session-overlay" id="session-overlay">
+    <div class="remaining ui" id="overlay-remaining"></div>
+    <div class="overlay-actions">
+      <button class="ghost-btn" id="btn-pause">Pause</button>
+      <button class="ghost-btn" id="btn-end">End Session</button>
+    </div>
+  </div>
+</div>
+
+<div id="view-complete" class="screen" hidden>
+  <div class="col">
+    <div class="complete-title">Meditation Complete</div>
+    <div class="complete-sub" id="complete-duration">60 minutes</div>
+    <button class="btn-done ui" id="btn-done">Done</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     CONFIG — single source of truth for tunable numbers
+     ============================================================ */
+  var CONFIG = {
+    inhaleSeconds: 3.333,
+    exhaleSeconds: 3.333,
+    panchaTattvaSeconds: 18
+  };
+
+  var PANCA_TATTVA = "jaya śrī-kṛṣṇa-caitanya\nprabhu nityānanda\nśrī-advaita gadādhara\nśrīvāsādi-gaura-bhakta-vṛnda";
+
+  var MAHA_MANTRA_LINES = [
+    { label: "INHALE", text: "Hare Krishna Hare Krishna" },
+    { label: "EXHALE", text: "Krishna Krishna Hare Hare" },
+    { label: "INHALE", text: "Hare Rama Hare Rama" },
+    { label: "EXHALE", text: "Rama Rama Hare Hare" }
+  ];
+
+  var AKSHARA_UNITS = ["ॐ", "नमो", "भगवते", "वासुदेवाय"];
+  var AKSHARA_FULL = "ॐ नमो भगवते वासुदेवाय";
+  var AKSHARA_TRANSLIT = "Oṃ Namo Bhagavate Vāsudevāya";
+
+  /* ============================================================
+     TEMPLATES — data-driven meditation structure
+     ============================================================ */
+  var TEMPLATES = {
+    "deep-bhakti-60": {
+      id: "deep-bhakti-60",
+      title: "Deep Bhakti",
+      durationSeconds: 3600,
+      phases: [
+        { id: "settle", label: "SETTLE", durationSeconds: 180, prompts: [
+          { atSeconds: 5, text: "Let the body settle." },
+          { atSeconds: 35, text: "Relax the shoulders." },
+          { atSeconds: 60, text: "Relax the face and eyes." },
+          { atSeconds: 90, text: "Notice the breath." },
+          { atSeconds: 125, text: "Nothing to control." },
+          { atSeconds: 155, text: "Turn inward." },
+          { atSeconds: 175, bell: true }
+        ]},
+        { id: "mantra-breath", label: "MANTRA + BREATH", durationSeconds: 1200, prompts: [] },
+        { id: "lila-smarana", label: "LĪLĀ-SMARAṇA", durationSeconds: 1200, prompts: [
+          { atSeconds: 0, bell: true },
+          { atSeconds: 8, text: "Govardhana appears." },
+          { atSeconds: 20, text: "Rain falls over Vraja." },
+          { atSeconds: 35, text: "Kṛṣṇa lifts it with ease." },
+          { atSeconds: 48, text: "See His peaceful face." }
+        ]},
+        { id: "akshara-dhyana", label: "AKṢARA-DHYĀNA", durationSeconds: 600, prompts: [
+          { atSeconds: 0, bell: true },
+          { atSeconds: 3, text: "The inner eye grows quiet." },
+          { atSeconds: 8, text: "Hear the mantra within." }
+        ]},
+        { id: "silence", label: "SILENCE", durationSeconds: 240, prompts: [
+          { atSeconds: 0, text: "Let effort become quiet." }
+        ]},
+        { id: "return", label: "RETURN", durationSeconds: 180, prompts: [
+          { atSeconds: 0, bell: true },
+          { atSeconds: 10, text: "Notice the breath." },
+          { atSeconds: 35, text: "Feel the body here." },
+          { atSeconds: 60, text: "Hands. Feet. The seat beneath you." },
+          { atSeconds: 95, text: "Notice the sounds around you." },
+          { atSeconds: 125, text: "Move the fingers and toes." },
+          { atSeconds: 150, text: "When ready, open the eyes." },
+          { atSeconds: 170, bell: true }
+        ]}
+      ]
+    },
+    "test-60": {
+      id: "test-60",
+      title: "60-Second Test",
+      durationSeconds: 60,
+      phases: [
+        { id: "settle", label: "SETTLE", durationSeconds: 5, prompts: [
+          { atSeconds: 1, text: "Let the body settle." },
+          { atSeconds: 4, bell: true }
+        ]},
+        { id: "mantra-breath", label: "MANTRA + BREATH", durationSeconds: 20, prompts: [] },
+        { id: "lila-smarana", label: "LĪLĀ-SMARAṇA", durationSeconds: 15, prompts: [
+          { atSeconds: 0, bell: true },
+          { atSeconds: 2, text: "Govardhana appears." },
+          { atSeconds: 6, text: "Rain falls over Vraja." }
+        ]},
+        { id: "akshara-dhyana", label: "AKṢARA-DHYĀNA", durationSeconds: 10, prompts: [
+          { atSeconds: 0, bell: true }
+        ]},
+        { id: "silence", label: "SILENCE", durationSeconds: 5, prompts: [
+          { atSeconds: 0, text: "Let effort become quiet." }
+        ]},
+        { id: "return", label: "RETURN", durationSeconds: 5, prompts: [
+          { atSeconds: 0, bell: true },
+          { atSeconds: 2, text: "Notice the breath." },
+          { atSeconds: 4, text: "Open the eyes." }
+        ]}
+      ]
+    }
+  };
+
+  /* ============================================================
+     SETTINGS — persisted locally
+     ============================================================ */
+  var Settings = {
+    voice: true,
+    ambient: true,
+    preview: false,
+    load: function(){
+      try{
+        var raw = localStorage.getItem("deepBhakti.settings");
+        if(raw){ var s = JSON.parse(raw); this.voice = !!s.voice; this.ambient = !!s.ambient; this.preview = !!s.preview; }
+      }catch(e){}
+    },
+    save: function(){
+      try{ localStorage.setItem("deepBhakti.settings", JSON.stringify({voice:this.voice, ambient:this.ambient, preview:this.preview})); }catch(e){}
+    }
+  };
+  Settings.load();
+
+  /* ============================================================
+     AUDIO ENGINE — synthesized bell + ambient rain (no external files)
+     ============================================================ */
+  var AudioEngine = (function(){
+    var ctx = null;
+    var masterGain = null;
+    var ambientSource = null;
+    var ambientGain = null;
+
+    function ensureCtx(){
+      if(!ctx){
+        var AC = window.AudioContext || window.webkitAudioContext;
+        ctx = new AC();
+        masterGain = ctx.createGain();
+        masterGain.gain.value = 0.9;
+        masterGain.connect(ctx.destination);
+      }
+      if(ctx.state === "suspended"){ ctx.resume(); }
+      return ctx;
+    }
+
+    function playBell(){
+      if(!Settings.voice && !Settings.ambient){ /* bells are structural, still play softly */ }
+      try{
+        var c = ensureCtx();
+        var now = c.currentTime;
+        [1, 2.4].forEach(function(mult, i){
+          var osc = c.createOscillator();
+          var g = c.createGain();
+          osc.type = "sine";
+          osc.frequency.value = 528 * mult;
+          var peak = i === 0 ? 0.22 : 0.06;
+          g.gain.setValueAtTime(0.0001, now);
+          g.gain.linearRampToValueAtTime(peak, now + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + 3.2);
+          osc.connect(g);
+          g.connect(masterGain);
+          osc.start(now);
+          osc.stop(now + 3.3);
+        });
+      }catch(e){}
+    }
+
+    function startAmbient(){
+      if(!Settings.ambient) return;
+      try{
+        var c = ensureCtx();
+        stopAmbient(true);
+        var bufferSize = 2 * c.sampleRate;
+        var buffer = c.createBuffer(1, bufferSize, c.sampleRate);
+        var data = buffer.getChannelData(0);
+        var lastOut = 0;
+        for(var i=0;i<bufferSize;i++){
+          var white = Math.random()*2-1;
+          lastOut = (lastOut + 0.02*white) / 1.02;
+          data[i] = lastOut * 3.2;
+        }
+        var src = c.createBufferSource();
+        src.buffer = buffer;
+        src.loop = true;
+        var filter = c.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 900;
+        ambientGain = c.createGain();
+        ambientGain.gain.value = 0.0001;
+        src.connect(filter);
+        filter.connect(ambientGain);
+        ambientGain.connect(masterGain);
+        src.start();
+        ambientSource = src;
+        fadeAmbient(0.12, 3000);
+      }catch(e){}
+    }
+
+    function fadeAmbient(target, ms){
+      if(!ambientGain) return;
+      try{
+        var c = ensureCtx();
+        var now = c.currentTime;
+        ambientGain.gain.cancelScheduledValues(now);
+        ambientGain.gain.setValueAtTime(ambientGain.gain.value, now);
+        ambientGain.gain.linearRampToValueAtTime(Math.max(target,0.0001), now + ms/1000);
+      }catch(e){}
+    }
+
+    function stopAmbient(immediate){
+      if(ambientSource){
+        try{
+          if(immediate){ ambientSource.stop(); }
+          else{
+            fadeAmbient(0.0001, 1500);
+            var s = ambientSource;
+            setTimeout(function(){ try{ s.stop(); }catch(e){} }, 1600);
+          }
+        }catch(e){}
+        ambientSource = null;
+        ambientGain = null;
+      }
+    }
+
+    return { ensureCtx: ensureCtx, playBell: playBell, startAmbient: startAmbient, fadeAmbient: fadeAmbient, stopAmbient: stopAmbient };
+  })();
+
+  /* ============================================================
+     SESSION CONTROLLER — timestamp-based, framework free
+     ============================================================ */
+  function SessionController(template){
+    this.template = template;
+    this.status = "idle";
+    this.startedAt = 0;
+    this.pausedAccumMs = 0;
+    this.pauseStartedAt = null;
+  }
+  SessionController.prototype.start = function(){
+    this.startedAt = Date.now();
+    this.pausedAccumMs = 0;
+    this.pauseStartedAt = null;
+    this.status = "running";
+    this.persist();
+  };
+  SessionController.prototype.pause = function(){
+    if(this.status !== "running") return;
+    this.pauseStartedAt = Date.now();
+    this.status = "paused";
+    this.persist();
+  };
+  SessionController.prototype.resume = function(){
+    if(this.status !== "paused") return;
+    this.pausedAccumMs += Date.now() - this.pauseStartedAt;
+    this.pauseStartedAt = null;
+    this.status = "running";
+    this.persist();
+  };
+  SessionController.prototype.end = function(){
+    this.status = "completed";
+    this.clearPersist();
+  };
+  SessionController.prototype.persist = function(){
+    try{
+      localStorage.setItem("deepBhakti.session", JSON.stringify({
+        templateId: this.template.id,
+        startedAt: this.startedAt,
+        pausedAccumMs: this.pausedAccumMs,
+        pauseStartedAt: this.pauseStartedAt,
+        status: this.status
+      }));
+    }catch(e){}
+  };
+  SessionController.prototype.clearPersist = function(){
+    try{ localStorage.removeItem("deepBhakti.session"); }catch(e){}
+  };
+  SessionController.prototype.getState = function(){
+    if(this.status === "idle") return null;
+    var now = Date.now();
+    var pausedMs = this.pausedAccumMs + (this.status === "paused" ? now - this.pauseStartedAt : 0);
+    var elapsedSeconds = Math.max(0, (now - this.startedAt - pausedMs) / 1000);
+    var total = this.template.durationSeconds;
+    var completed = false;
+    if(elapsedSeconds >= total){ elapsedSeconds = total; completed = true; }
+    var phases = this.template.phases;
+    var acc = 0, idx = 0, phase = phases[0];
+    for(var i=0;i<phases.length;i++){
+      var p = phases[i];
+      if(elapsedSeconds < acc + p.durationSeconds || i === phases.length-1){ idx = i; phase = p; break; }
+      acc += p.durationSeconds;
+    }
+    var phaseElapsed = Math.min(Math.max(0, elapsedSeconds - acc), phase.durationSeconds);
+    return {
+      status: completed ? "completed" : this.status,
+      elapsedSeconds: elapsedSeconds,
+      remainingSeconds: total - elapsedSeconds,
+      currentPhaseIndex: idx,
+      currentPhase: phase,
+      phaseElapsedSeconds: phaseElapsed,
+      phaseRemainingSeconds: phase.durationSeconds - phaseElapsed
+    };
+  };
+
+  var controller = null;
+
+  /* ============================================================
+     VIEW ROUTING
+     ============================================================ */
+  var views = {
+    home: document.getElementById("view-home"),
+    setup: document.getElementById("view-setup"),
+    session: document.getElementById("view-session"),
+    complete: document.getElementById("view-complete")
+  };
+  function showView(name){
+    Object.keys(views).forEach(function(k){ views[k].hidden = (k !== name); });
+  }
+
+  /* ============================================================
+     SETUP SCREEN
+     ============================================================ */
+  function syncSwitch(el, on){ el.setAttribute("data-on", on ? "true" : "false"); }
+  var swVoice = document.getElementById("switch-voice");
+  var swAmbient = document.getElementById("switch-ambient");
+  var swPreview = document.getElementById("switch-preview");
+  syncSwitch(swVoice, Settings.voice);
+  syncSwitch(swAmbient, Settings.ambient);
+  syncSwitch(swPreview, Settings.preview);
+  function updateSetupDurationLabel(){
+    document.getElementById("setup-duration-label").textContent = Settings.preview ? "60 seconds (preview)" : "60 minutes";
+  }
+  updateSetupDurationLabel();
+
+  swVoice.addEventListener("click", function(){ Settings.voice = !Settings.voice; syncSwitch(swVoice, Settings.voice); Settings.save(); });
+  swAmbient.addEventListener("click", function(){ Settings.ambient = !Settings.ambient; syncSwitch(swAmbient, Settings.ambient); Settings.save(); });
+  swPreview.addEventListener("click", function(){ Settings.preview = !Settings.preview; syncSwitch(swPreview, Settings.preview); Settings.save(); updateSetupDurationLabel(); });
+
+  document.getElementById("btn-gear").addEventListener("click", function(){ showView("setup"); });
+  document.getElementById("btn-home-begin").addEventListener("click", function(){ showView("setup"); });
+  document.getElementById("btn-setup-begin").addEventListener("click", function(){ beginSession(); });
+
+  /* ============================================================
+     SESSION SCREEN RENDERING
+     ============================================================ */
+  var phaseLabelEl = document.getElementById("phase-label");
+  var centerEl = document.getElementById("session-center");
+  var overlayEl = document.getElementById("session-overlay");
+  var overlayRemainingEl = document.getElementById("overlay-remaining");
+  var tapLayer = document.getElementById("session-tap-layer");
+  var sessionScreenEl = document.getElementById("view-session");
+
+  var runtime = null; // per-phase ephemeral state, reset on phase change
+  var overlayTimer = null;
+  var lastPhaseIndexRendered = -1;
+
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, t){ return a + (b-a)*t; }
+
+  function hexToRgb(hex){
+    var v = hex.replace('#','');
+    return [parseInt(v.substr(0,2),16), parseInt(v.substr(2,2),16), parseInt(v.substr(4,2),16)];
+  }
+  function lerpColor(hexA, hexB, t){
+    var a = hexToRgb(hexA), b = hexToRgb(hexB);
+    var r = Math.round(lerp(a[0], b[0], t));
+    var g = Math.round(lerp(a[1], b[1], t));
+    var bl = Math.round(lerp(a[2], b[2], t));
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+  function setSessionBg(hex){ document.documentElement.style.setProperty('--session-bg', hex); sessionScreenEl.style.backgroundColor = hex; }
+
+  function fmtRemaining(sec){
+    sec = Math.max(0, Math.round(sec));
+    var m = Math.floor(sec/60), s = sec % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s + " remaining";
+  }
+
+  function resetRuntime(idx){
+    runtime = { phaseIndex: idx, fired: {}, dom: {} };
+  }
+
+  function fireGenericPrompts(phase, phaseElapsed){
+    if(!phase.prompts) return;
+    for(var i=0;i<phase.prompts.length;i++){
+      var p = phase.prompts[i];
+      if(phaseElapsed >= p.atSeconds && !runtime.fired[i]){
+        runtime.fired[i] = true;
+        if(p.bell) AudioEngine.playBell();
+        if(p.text && Settings.voice) showTransientCue(p.text);
+      }
+    }
+  }
+
+  var cueHideTimer = null;
+  function showTransientCue(text){
+    var el = runtime.dom.cue;
+    if(!el) return;
+    el.textContent = text;
+    el.style.opacity = "1";
+    clearTimeout(cueHideTimer);
+    cueHideTimer = setTimeout(function(){ if(el) el.style.opacity = "0"; }, 5200);
+  }
+
+  /* ---- generic single-cue-line phase (settle / silence / return) ---- */
+  function buildGenericPhaseDom(){
+    centerEl.innerHTML = '<div class="cue-text ui" id="cue-text"></div>';
+    runtime.dom.cue = document.getElementById("cue-text");
+  }
+
+  /* ---- mantra + breath phase ---- */
+  function buildMantraBreathDom(){
+    centerEl.innerHTML =
+      '<div class="pancha deva" id="pancha-el">' + PANCA_TATTVA + '</div>' +
+      '<div class="breath-wrap" id="breath-wrap" style="opacity:0">' +
+        '<div class="breath-ring-holder">' +
+          '<div class="breath-ring" id="breath-ring"></div>' +
+          '<div class="breath-image">❌</div>' +
+        '</div>' +
+        '<div style="text-align:center">' +
+          '<div class="breath-line-label ui" id="breath-label"></div>' +
+          '<div class="breath-line-text" id="breath-text"></div>' +
+        '</div>' +
+      '</div>';
+    // lotus-feet placeholder glyph instead of an emoji cross
+    document.querySelector('.breath-image').textContent = '❀';
+    runtime.dom.pancha = document.getElementById("pancha-el");
+    runtime.dom.breathWrap = document.getElementById("breath-wrap");
+    runtime.dom.breathRing = document.getElementById("breath-ring");
+    runtime.dom.breathLabel = document.getElementById("breath-label");
+    runtime.dom.breathText = document.getElementById("breath-text");
+  }
+
+  function renderMantraBreath(phase, phaseElapsed){
+    var dur = phase.durationSeconds;
+    var openingDur = Math.min(CONFIG.panchaTattvaSeconds, dur * 0.15);
+    var midStart = dur/2;
+
+    // Pancha-tattva opening / midpoint display
+    var showingPancha = false;
+    if(phaseElapsed <= openingDur){ showingPancha = true; }
+    if(phaseElapsed >= midStart && phaseElapsed <= midStart+openingDur){
+      showingPancha = true;
+      if(!runtime.dom.midBellFired){ runtime.dom.midBellFired = true; AudioEngine.playBell(); }
+    }
+    runtime.dom.pancha.style.opacity = showingPancha ? "1" : "0";
+    runtime.dom.breathWrap.style.opacity = showingPancha ? "0" : "1";
+
+    // Effective breathing-elapsed time (frozen during the two pancha windows)
+    var effElapsed;
+    if(phaseElapsed <= openingDur) effElapsed = 0;
+    else if(phaseElapsed <= midStart) effElapsed = phaseElapsed - openingDur;
+    else if(phaseElapsed <= midStart+openingDur) effElapsed = midStart - openingDur;
+    else effElapsed = phaseElapsed - openingDur - openingDur;
+
+    var segDurations = MAHA_MANTRA_LINES.map(function(l){ return l.label === "INHALE" ? CONFIG.inhaleSeconds : CONFIG.exhaleSeconds; });
+    var patternTotal = segDurations.reduce(function(a,b){return a+b;}, 0);
+    var pos = ((effElapsed % patternTotal) + patternTotal) % patternTotal;
+    var cum = 0, segIdx = 0, segLocal = 0;
+    for(var i=0;i<segDurations.length;i++){
+      if(pos < cum + segDurations[i]){ segIdx = i; segLocal = pos - cum; break; }
+      cum += segDurations[i];
+    }
+    var line = MAHA_MANTRA_LINES[segIdx];
+    var frac = clamp(segLocal / segDurations[segIdx], 0, 1);
+    var eased = frac*frac*(3-2*frac);
+    var scale = line.label === "INHALE" ? lerp(1.0, 1.32, eased) : lerp(1.32, 1.0, eased);
+    if(!showingPancha){
+      runtime.dom.breathRing.style.transform = "scale(" + scale.toFixed(3) + ")";
+    }
+    if(runtime.dom.lastLineIdx !== segIdx){
+      runtime.dom.lastLineIdx = segIdx;
+      runtime.dom.breathLabel.textContent = line.label;
+      runtime.dom.breathText.textContent = line.text;
+    }
+
+    // progressive dimming after the opening settles, deepening across the phase
+    var dimStart = Math.max(openingDur, dur*0.15);
+    var t = clamp((phaseElapsed - dimStart) / (dur - dimStart), 0, 1);
+    var textOpacity = lerp(1, 0.4, t);
+    var ringOpacity = lerp(1, 0.35, t);
+    runtime.dom.breathLabel.style.opacity = textOpacity;
+    runtime.dom.breathText.style.opacity = textOpacity;
+    runtime.dom.breathRing.style.opacity = ringOpacity;
+
+    setSessionBg(lerpColor("#0E0B08", "#050403", t));
+  }
+
+  /* ---- lila-smarana phase ---- */
+  function buildLilaDom(){
+    centerEl.innerHTML =
+      '<div class="lila-wrap">' +
+        '<div class="lila-image-holder ui" id="lila-image">Govardhana līlā image placeholder</div>' +
+        '<div class="close-eyes ui" id="close-eyes">CLOSE YOUR EYES</div>' +
+        '<div class="cue-text ui" id="cue-text"></div>' +
+      '</div>';
+    runtime.dom.image = document.getElementById("lila-image");
+    runtime.dom.closeEyes = document.getElementById("close-eyes");
+    runtime.dom.cue = document.getElementById("cue-text");
+  }
+
+  function renderLila(phase, phaseElapsed){
+    var dur = phase.durationSeconds;
+    fireGenericPrompts(phase, phaseElapsed);
+
+    if(!runtime.dom.ambientStarted){
+      runtime.dom.ambientStarted = true;
+      AudioEngine.startAmbient();
+    }
+
+    var eyesCloseAt = dur * 0.05; // ~60s of a 1200s phase, matching spec proportion
+    if(phaseElapsed >= eyesCloseAt){
+      if(!runtime.dom.eyesClosed){
+        runtime.dom.eyesClosed = true;
+        AudioEngine.playBell();
+        if(Settings.voice) showTransientCue("Close the eyes. Continue within.");
+      }
+      runtime.dom.closeEyes.style.opacity = "1";
+      runtime.dom.image.style.opacity = "0";
+    }
+
+    // ambient fades out gradually over the following ~4 minutes of real time (proportional)
+    var fadeStart = eyesCloseAt + dur*0.025;
+    var fadeEnd = eyesCloseAt + dur*0.28;
+    if(phaseElapsed >= fadeStart && !runtime.dom.ambientFading){
+      runtime.dom.ambientFading = true;
+      AudioEngine.fadeAmbient(0.0001, (fadeEnd-fadeStart)*1000);
+    }
+
+    var t = clamp(phaseElapsed / dur, 0, 1);
+    setSessionBg(lerpColor("#050403", "#050403", t));
+  }
+
+  /* ---- akshara-dhyana phase ---- */
+  function buildAksharaDom(){
+    var html = '<div class="akshara-units">';
+    AKSHARA_UNITS.forEach(function(u, i){
+      html += '<div class="akshara-unit deva" id="aks-unit-' + i + '">' + u + '</div>';
+    });
+    html += '<div class="akshara-full deva" id="aks-full">' + AKSHARA_FULL + '</div>';
+    html += '<div class="akshara-translit ui" id="aks-translit">' + AKSHARA_TRANSLIT + '</div>';
+    html += '<div class="cue-text ui" id="cue-text" style="margin-top:18px"></div>';
+    html += '</div>';
+    centerEl.innerHTML = html;
+    runtime.dom.units = AKSHARA_UNITS.map(function(_, i){ return document.getElementById("aks-unit-" + i); });
+    runtime.dom.full = document.getElementById("aks-full");
+    runtime.dom.translit = document.getElementById("aks-translit");
+    runtime.dom.cue = document.getElementById("cue-text");
+  }
+
+  function renderAkshara(phase, phaseElapsed){
+    var dur = phase.durationSeconds;
+    fireGenericPrompts(phase, phaseElapsed);
+
+    var introEnd = dur * 0.02;
+    var wordStart = dur * 0.03;
+    var wordGap = dur * 0.025;
+    var fullStart = wordStart + wordGap * (AKSHARA_UNITS.length + 0.5);
+    var fullEnd = fullStart + dur * 0.06;
+    var fadeAllAt = fullEnd + dur * 0.02;
+
+    if(phaseElapsed > introEnd){
+      AKSHARA_UNITS.forEach(function(_, i){
+        var showAt = wordStart + i*wordGap;
+        var hideAt = showAt + wordGap*1.6;
+        var visible = phaseElapsed >= showAt && phaseElapsed < fullStart;
+        runtime.dom.units[i].style.opacity = (phaseElapsed >= showAt && phaseElapsed < hideAt) ? "1" : (visible ? "1" : "0");
+      });
+    }
+
+    if(phaseElapsed >= fullStart && phaseElapsed < fadeAllAt){
+      runtime.dom.full.style.opacity = "1";
+      runtime.dom.translit.style.opacity = "1";
+      AKSHARA_UNITS.forEach(function(_, i){ runtime.dom.units[i].style.opacity = "0"; });
+      if(!runtime.dom.fullShownVoice && Settings.voice){
+        runtime.dom.fullShownVoice = true;
+      }
+    }
+
+    if(phaseElapsed >= fadeAllAt){
+      if(!runtime.dom.fadedVoice && Settings.voice){
+        runtime.dom.fadedVoice = true;
+        showTransientCue("Let it move inward. Close the eyes.");
+      }
+      runtime.dom.full.style.opacity = "0";
+      runtime.dom.translit.style.opacity = "0";
+    }
+
+    var t = clamp(phaseElapsed / dur, 0, 1);
+    setSessionBg(lerpColor("#0E0B08", "#050403", t));
+  }
+
+  /* ---- phase dispatch ---- */
+  var PHASE_RENDERERS = {
+    "settle": { build: buildGenericPhaseDom, render: function(phase, e){ fireGenericPrompts(phase, e); setSessionBg("#0E0B08"); } },
+    "mantra-breath": { build: buildMantraBreathDom, render: renderMantraBreath },
+    "lila-smarana": { build: buildLilaDom, render: renderLila },
+    "akshara-dhyana": { build: buildAksharaDom, render: renderAkshara },
+    "silence": { build: function(){ buildGenericPhaseDom(); AudioEngine.stopAmbient(false); }, render: function(phase, e){ fireGenericPrompts(phase, e); setSessionBg("#050403"); } },
+    "return": { build: buildGenericPhaseDom, render: function(phase, e, dur){
+        fireGenericPrompts(phase, e);
+        var t = clamp((e - dur*0.5) / (dur*0.5), 0, 1);
+        setSessionBg(lerpColor("#050403", "#171008", t));
+      } }
+  };
+
+  function renderSession(state){
+    if(state.currentPhaseIndex !== lastPhaseIndexRendered){
+      lastPhaseIndexRendered = state.currentPhaseIndex;
+      resetRuntime(state.currentPhaseIndex);
+      phaseLabelEl.textContent = state.currentPhase.label;
+      phaseLabelEl.style.opacity = "1";
+      PHASE_RENDERERS[state.currentPhase.id].build();
+    }
+    // phase label fades once things deepen (kept mostly hidden after settle)
+    if(state.currentPhase.id === "silence"){
+      phaseLabelEl.style.opacity = "0";
+    }
+    var entry = PHASE_RENDERERS[state.currentPhase.id];
+    entry.render(state.currentPhase, state.phaseElapsedSeconds, state.currentPhase.durationSeconds);
+
+    if(overlayEl.classList.contains("visible")){
+      overlayRemainingEl.textContent = fmtRemaining(state.remainingSeconds);
+    }
+  }
+
+  function onSessionComplete(){
+    AudioEngine.stopAmbient(true);
+    document.getElementById("complete-duration").textContent = (controller.template.durationSeconds/60 >= 1 ? Math.round(controller.template.durationSeconds/60) + " minutes" : controller.template.durationSeconds + " seconds");
+    controller.end();
+    showView("complete");
+  }
+
+  /* ---- tap-to-reveal controls ---- */
+  var overlayHideTimer = null;
+  tapLayer.addEventListener("click", function(){
+    overlayEl.classList.add("visible");
+    overlayRemainingEl.textContent = "";
+    clearTimeout(overlayHideTimer);
+    overlayHideTimer = setTimeout(function(){ overlayEl.classList.remove("visible"); }, 5000);
+  });
+  document.getElementById("btn-pause").addEventListener("click", function(e){
+    e.stopPropagation();
+    if(controller.status === "running"){ controller.pause(); e.target.textContent = "Resume"; }
+    else{ controller.resume(); e.target.textContent = "Pause"; }
+  });
+  document.getElementById("btn-end").addEventListener("click", function(e){
+    e.stopPropagation();
+    AudioEngine.stopAmbient(true);
+    controller.clearPersist();
+    controller.status = "idle";
+    showView("home");
+  });
+
+  /* ============================================================
+     SESSION LIFECYCLE
+     ============================================================ */
+  function beginSession(){
+    AudioEngine.ensureCtx();
+    var templateId = Settings.preview ? "test-60" : "deep-bhakti-60";
+    controller = new SessionController(TEMPLATES[templateId]);
+    controller.start();
+    lastPhaseIndexRendered = -1;
+    setSessionBg("#0E0B08");
+    showView("session");
+  }
+
+  /* Resume an in-progress session (handles reload / backgrounding). */
+  function tryRestoreSession(){
+    try{
+      var raw = localStorage.getItem("deepBhakti.session");
+      if(!raw) return;
+      var s = JSON.parse(raw);
+      var tpl = TEMPLATES[s.templateId];
+      if(!tpl) return;
+      controller = new SessionController(tpl);
+      controller.startedAt = s.startedAt;
+      controller.pausedAccumMs = s.pausedAccumMs;
+      controller.pauseStartedAt = s.pauseStartedAt;
+      controller.status = s.status === "paused" ? "paused" : "running";
+      var state = controller.getState();
+      if(!state || state.status === "completed"){ controller.clearPersist(); return; }
+      lastPhaseIndexRendered = -1;
+      showView("session");
+    }catch(e){}
+  }
+
+  document.getElementById("btn-done").addEventListener("click", function(){ showView("home"); });
+
+  /* ============================================================
+     MAIN LOOP
+     ============================================================ */
+  function frame(){
+    if(controller && controller.status !== "idle"){
+      var state = controller.getState();
+      if(state){
+        renderSession(state);
+        if(state.status === "completed"){
+          onSessionComplete();
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  tryRestoreSession();
+})();
+</script>
